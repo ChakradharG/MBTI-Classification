@@ -2,6 +2,7 @@
 [] <ADD> LICENSE
 [] <ADD> Dependencies
 [] <UPDATE> README
+[] <CLEAN> dataset, use regex
 [] <VISUALIZE> dataset (the dataset is imbalanced)
 [] <SOLVE> imbalanced classes issue
 [] <WRITE> feature extraction (Due 4/19)
