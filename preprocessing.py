@@ -2,6 +2,7 @@ import imp
 import numpy as np
 import pandas as pd
 from words import Words
+from tqdm import trange
 
 
 
@@ -9,20 +10,22 @@ def get_data(args):
 	if args.nc:
 		df = pd.read_csv('./data/mbti_1.csv')
 		posts = np.array([*map(lambda s: Words(s), df['posts'])])
-		labels = vectorize_labels(np.array(df['type']))	# one-hot vector encoding
+		labels = np.array(df['type'])
 		dictionary = compute_BoW(args, posts)
-		features = extract_features(args.l, posts, dictionary)
+		features = extract_features(args, posts, dictionary)
 		np.savez(
 			'./data/cleaned',
 			posts=posts,
 			labels=labels,
 			dictionary=dictionary,
-			features=features
+			features=features,
+			l=args.l
 		)
 	else:
 		df = np.load('./data/cleaned.npz', allow_pickle=True)
 		features = df['features']
 		labels = df['labels']
+		args.l = df['l']
 
 	return features, labels
 
@@ -63,7 +66,7 @@ def compute_BoW(args, posts):
 	for post in posts:
 		for word in post.words:
 			temp[word] = temp.get(word, 0) + 1
-	
+
 	sorted_keys = sorted(temp, key=temp.get, reverse=True)
 	BoW = {}
 
@@ -73,11 +76,11 @@ def compute_BoW(args, posts):
 	return BoW
 
 
-def extract_features(l, posts, dictionary):
-	features = np.zeros((posts.shape[0], l))
+def extract_features(args, posts, dictionary):
+	features = np.zeros((posts.shape[0], args.l))
 
-	for i, post in enumerate(posts):
+	for i in trange(len(posts), desc='Feature Extraction'):
 		for word, index in dictionary.items():
-			features[i, index] = post.words.count(word)
+			features[i, index] = posts[i].words.count(word)
 	
 	return features/features.max()
