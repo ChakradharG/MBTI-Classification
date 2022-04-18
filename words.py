@@ -8,6 +8,7 @@ class Words:
 	
 	def parse(self, string):
 		# change to regex
+		# remove other special characters : / . ( )
 		l = []
 		for i in string.split():
 			for j in i.split('|||'):
