@@ -29,20 +29,22 @@ def get_data(args):
 	return features, labels
 
 
-def split_data(features, labels):
+def split_data(features, labels, val_split=False):
 	N = features.shape[0]
 
 	idx = np.arange(N)
 	trn = np.random.choice(np.arange(idx.shape[0]), int(N*0.6), replace=False)
 
 	idx = np.delete(idx, trn)
-	val_i = np.random.choice(np.arange(idx.shape[0]), int(N*0.2), replace=False)
-	val = idx[val_i]
-
-	idx = np.delete(idx, val_i)
-	tst = idx
-
-	return (features[trn], labels[trn]), (features[val], labels[val]), (features[tst], labels[tst])
+	if val_split:
+		val_i = np.random.choice(np.arange(idx.shape[0]), int(N*0.2), replace=False)
+		val = idx[val_i]
+		idx = np.delete(idx, val_i)
+		tst = idx
+		return (features[trn], labels[trn]), (features[val], labels[val]), (features[tst], labels[tst])
+	else:
+		tst = idx
+		return (features[trn], labels[trn]), (features[tst], labels[tst])
 
 
 def vectorize_labels(labels):
