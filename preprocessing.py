@@ -1,4 +1,3 @@
-import imp
 import numpy as np
 import pandas as pd
 from words import Words
@@ -69,9 +68,10 @@ def compute_BoW(args, posts):
 
 	sorted_keys = sorted(temp, key=temp.get, reverse=True)
 	BoW = {}
+	N = temp[sorted_keys[0]]
 
-	for i in range(args.l):
-		BoW[sorted_keys[i]] = i
+	for i in range(200, args.l):
+		BoW[sorted_keys[i]] = (i-200, temp[sorted_keys[i]]/N)
 
 	return BoW
 
@@ -80,7 +80,8 @@ def extract_features(args, posts, dictionary):
 	features = np.zeros((posts.shape[0], args.l))
 
 	for i in trange(len(posts), desc='Feature Extraction'):
-		for word, index in dictionary.items():
-			features[i, index] = posts[i].words.count(word)
+		for word, (index, doc_freq) in dictionary.items():
+			features[i, index] = posts[i].words.count(word)/doc_freq
+		features[i] = features[i]/(features[i].sum() + 1)
 	
-	return features/features.max()
+	return features
