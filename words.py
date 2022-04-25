@@ -1,28 +1,21 @@
-import re
-
-
-
 class Words:
 	def __init__(self, string):
 		self.words = self.parse(string)
 	
 	def parse(self, string):
-		# change to regex
-		# remove other special characters : / . ( )
 		l = []
-		for i in string.split():
-			for j in i.split('|||'):
-				if j.startswith("'http") or j.startswith('http'):
+		string = string.split('|||')
+		for s in string:
+			s = s.replace("'", '')
+			s = s.replace('"', '')
+			s = s.replace(',', ' ')
+			s = s.replace('...', ' ')
+			s = s.split()
+			for i in s:
+				if i.startswith('http'):
 					continue
-				if j.startswith("'"):
-					l.append(j[1:].lower())
-				elif j.endswith("'"):
-					l.append(j[:-1].lower())
-				elif j.startswith("..."):
-					l.append(j[3:].lower())
-				elif j.endswith("..."):
-					l.append(j[:-3].lower())
-				else:
-					l.append(j.lower())
+				i = i.replace('.', '-')
+				i = i.split('-')
+				l.extend(filter(lambda x: x.isalpha(), map(lambda x: x.lower(), i)))
 		
 		return l
