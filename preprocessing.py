@@ -32,17 +32,19 @@ def get_data(args):
 def split_data(features, labels, val_split=False):
 	N = features.shape[0]
 
-	idx = np.arange(N)
-	trn = np.random.choice(np.arange(idx.shape[0]), int(N*0.6), replace=False)
-
-	idx = np.delete(idx, trn)
 	if val_split:
+		idx = np.arange(N)
+		trn = np.random.choice(np.arange(idx.shape[0]), int(N*0.6), replace=False)
+		idx = np.delete(idx, trn)
 		val_i = np.random.choice(np.arange(idx.shape[0]), int(N*0.2), replace=False)
 		val = idx[val_i]
 		idx = np.delete(idx, val_i)
 		tst = idx
 		return (features[trn], labels[trn]), (features[val], labels[val]), (features[tst], labels[tst])
 	else:
+		idx = np.arange(N)
+		trn = np.random.choice(np.arange(idx.shape[0]), int(N*0.7), replace=False)
+		idx = np.delete(idx, trn)
 		tst = idx
 		return (features[trn], labels[trn]), (features[tst], labels[tst])
 
@@ -72,8 +74,8 @@ def compute_BoW(args, posts):
 	BoW = {}
 	N = temp[sorted_keys[0]]
 
-	for i in range(200, args.l):
-		BoW[sorted_keys[i]] = (i-200, temp[sorted_keys[i]]/N)
+	for i in range(100, args.l):
+		BoW[sorted_keys[i]] = (i-100, temp[sorted_keys[i]]/N)
 
 	return BoW
 
