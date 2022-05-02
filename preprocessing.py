@@ -57,7 +57,7 @@ def vectorize_labels(labels):
 		'INFP', 'INFJ', 'INTP', 'INTJ'
 	]
 
-	labels_vect = np.zeros((labels.shape[0], 16), dtype=np.uint8)
+	labels_vect = np.zeros((labels.shape[0], len(lst)), dtype=np.uint8)
 	for i, label in enumerate(labels):
 		labels_vect[i, lst.index(label)] = 1
 	
