@@ -74,8 +74,8 @@ def compute_BoW(args, posts):
 	BoW = {}
 	N = temp[sorted_keys[0]]
 
-	for i in range(100, args.l):
-		BoW[sorted_keys[i]] = (i-100, temp[sorted_keys[i]]/N)
+	for i in range(args.d, args.l):
+		BoW[sorted_keys[i]] = (i-args.d, temp[sorted_keys[i]]/N)
 
 	return BoW
 
