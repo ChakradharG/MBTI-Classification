@@ -5,7 +5,6 @@ from sklearn.linear_model import LogisticRegression
 from sklearn import svm
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
-from sklearn.neural_network import MLPClassifier
 from joblib import dump, load
 
 # np.random.seed = 1	# uncomment for better reproducibility
@@ -22,7 +21,6 @@ def get_args():
     p.add_argument('--svm', help='run SVM', default=False, action='store_true')
     p.add_argument('--dtc', help='run decision tree', default=False, action='store_true')
     p.add_argument('--nb', help='run naive bayes', default=False, action='store_true')
-    p.add_argument('--mlp', help='run MLP', default=False, action='store_true')
     p.add_argument('--all', help='run all models', default=False, action='store_true')
 
     return p.parse_args()
@@ -63,14 +61,6 @@ def main(args):
 			modelNB = GaussianNB().fit(x_trn,y_trn)
 		print('NB: ', modelNB.score(x_tst, y_tst))	# test accuracy
 		dump(modelNB, './out/modelNB.joblib')
-
-	if args.mlp or args.all:
-		if args.ls:
-			modelMLP = load('./out/modelMLP.joblib')
-		else:
-			modelMLP = MLPClassifier(max_iter=1000).fit(x_trn, y_trn)
-		print('MLP: ', modelMLP.score(x_tst, y_tst))	# test accuracy
-		dump(modelMLP, './out/modelMLP.joblib')
 
 if __name__ == '__main__':
 	args = get_args()
