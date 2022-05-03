@@ -9,6 +9,7 @@ def get_data(args):
 	if args.nc:
 		df = pd.read_csv('./data/mbti_1.csv')
 		posts = np.array([*map(lambda s: Words(s), df['posts'])])
+		# print(posts[0].words)	# visualizing cleaned data
 		labels = np.array(df['type'])
 		dictionary = compute_BoW(args, posts)
 		features = extract_features(args, posts, dictionary)
