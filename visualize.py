@@ -1,30 +1,36 @@
-from preprocessing import *
-from main import get_args, get_data
+import numpy as np
 from matplotlib import pyplot as plt
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 
 
 
-def main(args):
-	features, labels = get_data(args)
-
-	# visualizing the first 20 examples as images
+def feature_images(features, labels):
 	plt.figure()
 	for i in range(20):
 		plt.imshow(np.resize(features[i], (22, 22)))
 		plt.title(labels[i])
 		plt.show()
-		# plt.savefig(f'./data/{i}.png')
+		# plt.savefig(f'./data/feature_image_{i}.png')
 
-	# visualizing number of examples in each of the 16 classes
+
+def num_classes(labels):
 	label_list = {}
 	for label in labels:
 		label_list[label] = label_list.get(label, 0) + 1
 	plt.figure()
 	plt.bar(label_list.keys(), label_list.values())
+	plt.title('Number of examples of each class in the dataset')
 	plt.show()
 	# plt.savefig(f'./data/num_classes.png')
-	
 
-if __name__ == '__main__':
-	args = get_args()
-	main(args)
+
+def display_conf_mat(model, model_name, x_tst, y_tst):
+	y_pred = model.predict(x_tst)
+	conf_mat = confusion_matrix(y_tst, y_pred)
+	ConfusionMatrixDisplay(
+		confusion_matrix=conf_mat,
+		display_labels=model.classes_
+	).plot()
+	plt.title(model_name)
+	plt.show()
+	# plt.savefig(f'./data/conf_mat_{model_name}.png')

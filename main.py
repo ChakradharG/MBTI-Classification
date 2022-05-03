@@ -1,6 +1,7 @@
 import numpy as np
 from preprocessing import *
 from hypertune import tune
+from visualize import feature_images, num_classes, display_conf_mat
 import argparse
 from sklearn.linear_model import LogisticRegression
 from sklearn import svm
@@ -41,6 +42,10 @@ def get_args():
 
 def main(args):
 	features, labels = get_data(args)	# pass --nc flag if running for the first time
+
+	# feature_images(features, labels)	# visualizing the first 20 examples as images
+	# num_classes(labels)	# visualizing number of examples in each of the 16 classes
+
 	(x_trn, y_trn), (x_tst, y_tst) = split_data(features, labels)
 
 	if args.lr or args.all:
@@ -51,6 +56,7 @@ def main(args):
 		else:
 			modelLR = LogisticRegression(max_iter=args.lr_mxi, C=args.lr_c).fit(x_trn, y_trn)
 		print('LR: ', modelLR.score(x_tst, y_tst))	# test accuracy
+		display_conf_mat(modelLR, 'Logistic Regression', x_tst, y_tst)
 		dump(modelLR, './out/modelLR.joblib')
 
 	if args.svm or args.all:
@@ -61,6 +67,7 @@ def main(args):
 		else:
 			modelSVM = svm.SVC(max_iter=args.svm_mxi, C=args.svm_c).fit(x_trn,y_trn)
 		print('SVM: ', modelSVM.score(x_tst, y_tst))	# test accuracy
+		display_conf_mat(modelSVM, 'SVM', x_tst, y_tst)
 		dump(modelSVM, './out/modelSVM.joblib')
 
 	if args.dtc or args.all:
@@ -71,6 +78,7 @@ def main(args):
 		else:
 			modelDTC = DecisionTreeClassifier(criterion=args.dtc_c, max_depth=args.dtc_mxd).fit(x_trn,y_trn)
 		print('DTC: ', modelDTC.score(x_tst, y_tst))	# test accuracy
+		display_conf_mat(modelDTC, 'Decision Tree', x_tst, y_tst)
 		dump(modelDTC, './out/modelDTC.joblib')
 
 	if args.nb or args.all:
@@ -81,6 +89,7 @@ def main(args):
 		else:
 			modelNB = GaussianNB().fit(x_trn,y_trn)
 		print('NB: ', modelNB.score(x_tst, y_tst))	# test accuracy
+		display_conf_mat(modelNB, 'Naive Bayes', x_tst, y_tst)
 		dump(modelNB, './out/modelNB.joblib')
 
 	if args.mlp or args.all:
@@ -96,6 +105,7 @@ def main(args):
 				alpha=args.mlp_alp
 			).fit(x_trn, y_trn)
 		print('MLP: ', modelMLP.score(x_tst, y_tst))	# test accuracy
+		display_conf_mat(modelMLP, 'Multilayer Perceptron (Neural Network)', x_tst, y_tst)
 		dump(modelMLP, './out/modelMLP.joblib')
 
 if __name__ == '__main__':
