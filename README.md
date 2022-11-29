@@ -8,13 +8,3 @@ Our solution to [this kaggle problem](https://www.kaggle.com/datasets/datasnaek/
 * Clone this repository
 * `cd MBTI-Classification`
 * Download the dataset from [kaggle](https://www.kaggle.com/datasets/datasnaek/mbti-type/download) and extract the file into `MBTI-Classification/data/`
-
-<br>
-
-## How to Use
-
-
-<br>
-
-## Example Output
-(Images/Videos)
