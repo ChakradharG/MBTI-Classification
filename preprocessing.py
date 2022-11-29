@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from words import Words
-from tqdm import trange	# for progress bar
+from tqdm import trange
 
 
 
