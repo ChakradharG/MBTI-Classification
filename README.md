@@ -4,7 +4,12 @@ Our solution to [this kaggle problem](https://www.kaggle.com/datasets/datasnaek/
 <br>
 
 ## Getting Started
-(How to install, additional downloads)
 * Clone this repository
 * `cd MBTI-Classification`
 * Download the dataset from [kaggle](https://www.kaggle.com/datasets/datasnaek/mbti-type/download) and extract the file into `MBTI-Classification/data/`
+
+<br>
+
+## How to Use
+* Run `main.py` (`python3 main.py --nc` if running for the first time)
+* Use other flags (`--l`, `--d`, etc.) to control hyperparameters (see `main.py > get_args` function for more details)
